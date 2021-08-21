@@ -1,6 +1,5 @@
-package hello.springmvc.requestmapping;
+package hello.springmvc.basic.requestmapping;
 
-import ch.qos.logback.classic.boolex.GEventEvaluator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
