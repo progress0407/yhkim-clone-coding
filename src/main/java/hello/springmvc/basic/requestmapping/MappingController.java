@@ -1,8 +1,10 @@
 package hello.springmvc.basic.requestmapping;
 
+import hello.springmvc.basic.HelloData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -70,6 +72,12 @@ public class MappingController {
     public String mappingProduces() {
         log.info("mappingProduces");
         return "ok";
+    }
+
+    // HttpMessageConverter 요청이 되지 확인
+    @GetMapping("/test-request")
+    public void testHttpMessageConverter(@RequestBody HelloData helloData) {
+        log.info("helloData = {}", helloData);
     }
 
 }
