@@ -1,40 +1,41 @@
 package jpa.app.shop.domain;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import jpa.app.shop.domain.item.Item;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity(name = "ORDERS")
+@Entity
 @Getter
 @Setter
 @ToString
-public class Order {
+public class OrderItem {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "order_id")
+	@Column(name = "order_item_id")
 	private Long id;
 
-	@JoinColumn(name = "member_id")
+	@JoinColumn(name = "order_id")
 	@ManyToOne(fetch = FetchType.LAZY)
 	@ToString.Exclude
-	private Member member;
+	private Order order;
 
-	private LocalDateTime orderDate;
+	@JoinColumn(name = "item_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@ToString.Exclude
+	private Item item;
 
-	@Enumerated(EnumType.STRING)
-	private OrderStatus orderStatus;
+	private int orderPrice;
+
+	private int count;
 
 }
