@@ -1,5 +1,6 @@
 package jpa.app.shop;
 
+import static jpa.app.shop.validator.MemberValidator.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
@@ -26,7 +27,9 @@ import jpa.app.shop.domain.Member;
 import jpa.app.shop.domain.Order;
 import jpa.app.shop.domain.OrderItem;
 import jpa.app.shop.domain.OrderStatus;
+import jpa.app.shop.exception.MemberDuplicateException;
 import jpa.app.shop.repository.MemberRepository;
+import jpa.app.shop.service.MemberService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,6 +40,9 @@ public class MySimpleTest {
 
 	@Autowired
 	private MemberRepository memberRepository;
+
+	@Autowired
+	private MemberService memberService;
 
 	@Test
 	@Transactional
@@ -95,11 +101,73 @@ public class MySimpleTest {
 
 		// when
 		Long saveMemberId = memberRepository.save(member);
-		Member findMember = memberRepository.find(saveMemberId);
+		Member findMember = memberRepository.findOne(saveMemberId);
 
 
 		// then
 		assertThat(findMember).isEqualTo(member);
 	}
 
+	@Test
+	@Transactional
+	@Rollback(false)
+	@DisplayName("잊을만 하면 해보는 N + 1 테스트")
+	public void nPlusOneTest() {
+		// given
+		Member userA = new Member();
+		userA.setName("user a");
+
+		Member userB = new Member();
+		userB.setName("user b");
+
+
+		Order orderA = new Order();
+		Order orderB = new Order();
+		Order orderC = new Order();
+
+		userA.addOrders(orderA, orderB);
+		userB.addOrders(orderC);
+
+		// when
+		System.out.println("#1 userA.getOrders().getClass() = " + userA.getOrders().getClass());
+		em.persist(userA);
+		em.persist(userB);
+
+		System.out.println("#2 userA.getOrders().getClass() = " + userA.getOrders().getClass());
+
+		em.flush();
+		em.clear();
+
+		System.out.println("#3 userA.getOrders().getClass() = " + userA.getOrders().getClass());
+
+		em.createQuery("select o from Order as o", Order.class).getResultList();
+
+		// then
+
+	}
+
+	@Test
+	@Transactional
+	@Rollback(false)
+	public void 중복된_회원이_존재할_경우() {
+		// given
+		final String sameName = "same name something";
+		Member userA = new Member();
+		userA.setName(sameName);
+
+		Member userB = new Member();
+		userB.setName(sameName);
+
+		// when
+		memberService.join(userA);
+
+		em.flush();
+		em.clear();
+
+		// then
+		assertThatThrownBy(() -> {
+			memberService.join(userB);
+		}).isInstanceOf(MemberDuplicateException.class)
+			.hasMessageContaining(MEMBER_DUPLICATE_EX_MSG);
+	}
 }
