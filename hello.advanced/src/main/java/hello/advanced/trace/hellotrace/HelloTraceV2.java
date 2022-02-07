@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-public class HelloTraceV1 {
+public class HelloTraceV2 {
 
 	private static final String START_PREFIX = "-->";
 	public static final String COMPLETE_PREFIX = "<--";
@@ -17,9 +17,16 @@ public class HelloTraceV1 {
 	public TraceStatus begin(String message) {
 		TraceId traceId = new TraceId();
 		long startTimeMs = System.currentTimeMillis();
-		// 로그 출력
 		log.info("[{}] {}{}", traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
 		return new TraceStatus(traceId, startTimeMs, message);
+	}
+
+	// V2에서 추가
+	public TraceStatus beginSync(TraceId beforeTraceId, String message) {
+		TraceId nextId = beforeTraceId.createNextId();
+		long startTimeMs = System.currentTimeMillis();
+		log.info("[{}] {}{}", nextId.getId(), addSpace(START_PREFIX, nextId.getLevel()), message);
+		return new TraceStatus(nextId, startTimeMs, message);
 	}
 
 	public void end(TraceStatus status) {
@@ -42,8 +49,6 @@ public class HelloTraceV1 {
 			log.info("[{}] {}{} time={}ms ex={}",
 				traceId.getId(), addSpace(EX_PREFIX, traceId.getLevel()), status.getMessage(), resultTimeMs, e.toString());
 		}
-
-
 	}
 
 
