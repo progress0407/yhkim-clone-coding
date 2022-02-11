@@ -14,6 +14,8 @@ import jpa.app.shop.domain.Member;
 import jpa.app.shop.exception.MemberDuplicateException;
 import jpa.app.shop.repository.MemberRepository;
 
+
+@SuppressWarnings("NonAsciiCharacters")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -21,6 +23,7 @@ public class MemberServiceTest {
 
 	@Autowired MemberService memberService;
 	@Autowired MemberRepository memberRepository;
+
 
 	@Test
 	@Rollback(false)
