@@ -2,27 +2,21 @@ package jpa.app.shop.jpastudy;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.Objects;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jpa.app.shop.domain.Member;
-import jpa.app.shop.repository.MemberRepository;
 import jpa.app.shop.service.MemberService;
 
-@SuppressWarnings("NonAsciiCharacters")
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class JpaStudyTest {
@@ -69,8 +63,10 @@ public class JpaStudyTest {
 		// <--- 영속성 컨텍스트 종료
 
 		// then
+		System.out.println("(member.equals(findMember)) = " + (member.equals(findMember)));
 		assertThat(findMember == member).isFalse();
-		assertThat(findMember).isNotEqualTo(member);
+		// assertThat(findMember).isNotEqualTo(member);
+		assertThat(findMember).isEqualTo(member);
 	}
 
 	@Transactional
@@ -84,6 +80,7 @@ public class JpaStudyTest {
 		// then
 		assertThat(findMember == member).isTrue();
 		assertThat(findMember).isEqualTo(member);
+
 	}
 
 	@Transactional
@@ -93,16 +90,13 @@ public class JpaStudyTest {
 
 	@Transactional
 	@Test
-	public void _1차_캐시를_지우면_두_객체는_서로_다르다() {
+	public void _1차_캐시를_지우면_두_객체의_동일성은_서로_다르다() {
 		em.persist(member);
 		Long savedId = member.getId();
 		em.flush();
 		em.clear();
 
 		Member findMember = em.find(Member.class, savedId);
-		assertThat(findMember).isNotEqualTo(member);
+		assertThat(findMember != member).isTrue();
 	}
-
-
-
 }

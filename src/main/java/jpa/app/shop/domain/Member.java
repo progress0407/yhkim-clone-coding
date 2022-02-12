@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.Hibernate;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,20 +41,21 @@ public class Member {
 		Arrays.stream(orders).forEach((Order order) -> order.setMember(this));
 	}
 
+	// Hibernate.getClass()
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (o == null || getClass() != o.getClass())
+
+		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
 			return false;
 		Member member = (Member)o;
-		return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName())
-			&& Objects.equals(getAddress(), member.getAddress()) && Objects.equals(getOrders(),
-			member.getOrders());
+		return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), getName(), getAddress(), getOrders());
+		return Objects.hash(getId(), getName());
 	}
 }

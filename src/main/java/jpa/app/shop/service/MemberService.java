@@ -3,6 +3,7 @@ package jpa.app.shop.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import jpa.app.shop.domain.Member;
