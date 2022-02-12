@@ -40,4 +40,8 @@ public class MemberRepository {
 			.setParameter("username", member.getName())
 			.getSingleResult();
 	}
+
+	public void clear() {
+		em.createQuery("delete from Member m").executeUpdate();
+	}
 }

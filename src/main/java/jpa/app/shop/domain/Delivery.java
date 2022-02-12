@@ -22,5 +22,5 @@ public class Delivery {
 	@Embedded
 	private Address address;
 
-	private DeliveryStatus deliveryStatus;
+	private DeliveryStatus status;
 }

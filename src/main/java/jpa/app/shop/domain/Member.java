@@ -3,6 +3,7 @@ package jpa.app.shop.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,5 +37,22 @@ public class Member {
 	public void addOrders(Order... orders) {
 		this.orders.addAll(List.of(orders));
 		Arrays.stream(orders).forEach((Order order) -> order.setMember(this));
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Member member = (Member)o;
+		return Objects.equals(getId(), member.getId()) && Objects.equals(getName(), member.getName())
+			&& Objects.equals(getAddress(), member.getAddress()) && Objects.equals(getOrders(),
+			member.getOrders());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getId(), getName(), getAddress(), getOrders());
 	}
 }

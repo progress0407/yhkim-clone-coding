@@ -59,13 +59,13 @@ public class MySimpleTest {
 
 		Order order = new Order();
 		order.setOrderDate(LocalDateTime.now());
-		order.setOrderStatus(OrderStatus.ORDER);
+		order.setStatus(OrderStatus.ORDER);
 
 		member.addOrders(order);
 
 		Delivery delivery = new Delivery();
 		delivery.setAddress(address);
-		delivery.setDeliveryStatus(DeliveryStatus.READY);
+		delivery.setStatus(DeliveryStatus.READY);
 
 		Album album = new Album();
 		album.setStockQuantity(1_000);
