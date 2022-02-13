@@ -53,11 +53,14 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
 
+	protected Order() {
+	}
+
 	//==연관관계 메서드==//
 
 	public void setMember(Member member) {
 		this.member = member;
-		member.addOrders(this);
+		member.getOrders().add(this);
 	}
 
 	public void addOrderItem(OrderItem orderItem) {
@@ -99,10 +102,9 @@ public class Order {
 	 * 전체 주문 가격 조회
 	 */
 	public int getTotalPrice() {
-		int totalPrice = orderItems.stream()
+
+		return orderItems.stream()
 			.mapToInt(OrderItem::getTotalPrice)
 			.sum();
-
-		return totalPrice;
 	}
 }

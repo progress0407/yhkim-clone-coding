@@ -37,7 +37,6 @@ public class MemberServiceTest {
 
 		// then
 		assertEquals(member, memberRepository.findOne(savedId));
-
 	}
 
 	@Test
