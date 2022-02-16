@@ -35,7 +35,7 @@ public class Order {
 	private Long id;
 
 	@JoinColumn(name = "member_id")
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@ToString.Exclude
 	private Member member;
 
@@ -44,7 +44,7 @@ public class Order {
 	@ToString.Exclude
 	private Delivery delivery;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.PERSIST)
 	@ToString.Exclude
 	private final List<OrderItem> orderItems = new ArrayList<>();
 

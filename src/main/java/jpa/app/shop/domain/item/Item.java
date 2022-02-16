@@ -55,4 +55,11 @@ abstract public class Item {
 
 		this.stockQuantity = restStock;
 	}
+
+	public void changeItem(Item param) {
+		price = param.price;
+		name = param.name;
+		stockQuantity = param.stockQuantity;
+	}
+
 }
