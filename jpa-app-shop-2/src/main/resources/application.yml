@@ -16,4 +16,4 @@ spring:
 logging.level:
     org.hibernate:
       SQL: debug
-#      type: trace
+#      type: trace # p6spy 모듈 사용으로 대체

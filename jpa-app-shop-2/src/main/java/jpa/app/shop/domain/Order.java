@@ -1,15 +1,16 @@
 package jpa.app.shop.domain;
 
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -34,30 +34,32 @@ public class Order {
 	@Column(name = "order_id")
 	private Long id;
 
+	@JsonIgnore
 	@JoinColumn(name = "member_id")
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = LAZY, cascade = ALL)
 	@ToString.Exclude
 	private Member member;
 
+	@JsonIgnore
 	@JoinColumn(name = "delivery_id")
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = LAZY, cascade = ALL)
 	@ToString.Exclude
 	private Delivery delivery;
 
-	@OneToMany(cascade = CascadeType.PERSIST)
+	@JsonIgnore
+	@OneToMany(cascade = ALL)
 	@ToString.Exclude
 	private final List<OrderItem> orderItems = new ArrayList<>();
 
 	private LocalDateTime orderDate;
 
-	@Enumerated(EnumType.STRING)
+	@Enumerated(STRING)
 	private OrderStatus status;
 
 	protected Order() {
 	}
 
 	//==연관관계 메서드==//
-
 	public void setMember(Member member) {
 		this.member = member;
 		member.getOrders().add(this);
@@ -102,7 +104,6 @@ public class Order {
 	 * 전체 주문 가격 조회
 	 */
 	public int getTotalPrice() {
-
 		return orderItems.stream()
 			.mapToInt(OrderItem::getTotalPrice)
 			.sum();
