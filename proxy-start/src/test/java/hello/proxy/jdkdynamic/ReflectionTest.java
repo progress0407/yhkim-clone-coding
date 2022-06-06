@@ -33,7 +33,7 @@ public class ReflectionTest {
 	}
 
 	@Test
-	void reflection() throws Exception {
+	void reflection1() throws Exception {
 		// 클래스의 메타정보 획득
 		Class classHello = Class.forName("hello.proxy.jdkdynamic.ReflectionTest$Hello");
 
