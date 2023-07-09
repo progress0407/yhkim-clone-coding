@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# ------------------------------------------------------------------
+# Script Name: subtree_add.sh
+# Description: This script automates the process of adding a Git
+#              subtree to your repository.
+# Instructions: To use this script, provide the URL of the Git
+#               repository that you want to add as a subtree.
+#               The name of the subtree will be derived from the URL.
+# Example:     ./subtree_add.sh https://github.com/progress0407/yhkim-mvc2-message.git
+# ------------------------------------------------------------------
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -22,39 +32,41 @@ if [ "$#" -ne 1 ]; then
     exit 1
 fi
 
-# Assign arguments to variables for better readability
-repo_name="later init"
-repo_url=$1
-target_dir=$repo_name
-branch_name="main"
-
-# Assign repo_name
+# Extract repository name from URL
 extract_repo_name() {
-    local repo_name_with_extension=$(basename $repo_url)
-    local repo_name=${repo_name_with_extension%.git}
-
-    echo "$repo_name"
+    local url=$1
+    local repo_name_with_extension=$(basename "$url")
+    echo ${repo_name_with_extension%.git}
 }
 
-repo_name=$(extract_repo_name)
+# Assign arguments to variables for better readability
+repo_url=$1
+repo_name=$(extract_repo_name "$repo_url")
+target_dir=$repo_name
+branch_name="main"
 
 
 # Add the remote
 git remote add $repo_name $repo_url
 echo_blue "${BLUE}add remote git repo${NC}"
 
+
 # Add the subtree
 git subtree add --prefix=$target_dir $repo_name $branch_name
 echo_blue "add subtree"
+
 
 # Add and commit changes
 git add -A
 git commit -m "add $repo_name"
 echo_blue "commit"
 
+
 # Remove the remote
 git remote remove $repo_name
 echo_blue "remove git repo for subtree"
 
+
 # Output Git Log to Verify it worked correctly
+echo_blue "Printing git log for verification..."
 git log --oneline -n 6
