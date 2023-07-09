@@ -55,3 +55,6 @@ echo_blue "commit"
 # Remove the remote
 git remote remove $repo_name
 echo_blue "remove git repo for subtree"
+
+# Output Git Log to Verify it worked correctly
+git log --oneline -n 6
