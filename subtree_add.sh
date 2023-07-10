@@ -72,5 +72,7 @@ git log --oneline -n 6
 # Output Pulled Directory to Verify
 echo_blue "Printing Pulled Directory to verification"
 ls -half | grep $target_dir
+
+# Output Detail Directory's Content
 ls $target_dir
 
