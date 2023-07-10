@@ -74,5 +74,6 @@ echo_blue "Printing Pulled Directory to verification"
 ls -half | grep $target_dir
 
 # Output Detail Directory's Content
+echo_blue "Printing Detail Directory's Content"
 ls $target_dir
 
