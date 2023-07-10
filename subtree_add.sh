@@ -13,21 +13,12 @@
 
 
 # Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
-
-echo_blue() {
-    echo -e "\n${BLUE}$1${NC}"
-}
-
-
-echo_red() {
-    echo -e "\n${RED}$1${NC}"
-}
+if [ -f ./colors.sh ]; then
+    source ./colors.sh
+else
+    echo "File ./colors.sh not found. Exiting."
+    exit 1
+fi
 
 
 # Check for correct number of arguments
@@ -81,4 +72,5 @@ git log --oneline -n 6
 # Output Pulled Directory to Verify
 echo_blue "Printing Pulled Directory to verification"
 ls -half | grep $target_dir
+ls $target_dir
 
