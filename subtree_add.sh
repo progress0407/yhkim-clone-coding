@@ -54,7 +54,7 @@ branch_name="main"
 
 # Add the remote
 git remote add $repo_name $repo_url
-echo_blue "add remote git repo"
+echo_blue "\nadd remote git repo"
 
 
 # Add the subtree
@@ -64,21 +64,21 @@ echo_blue "add subtree"
 
 # Add and commit changes
 git add -A
-git commit -m "add $repo_name"
+git commit -m "\nadd $repo_name"
 echo_blue "commit"
 
 
 # Remove the remote
 git remote remove $repo_name
-echo_blue "remove git repo for subtree"
+echo_blue "\nremove git repo for subtree"
 
 
 # Output Git Log to Verify it worked correctly
-echo_blue "Printing git log for verification..."
+echo_blue "\nPrinting git log for verification..."
 git log --oneline -n 6
 
 
 # Output Pulled Directory to Verify
-echo_blue "Printing Pulled Directory to verification"
+echo_blue "\nPrinting Pulled Directory to verification"
 ls -half | grep $target_dir
 
